@@ -51,8 +51,9 @@
                   ];
 
         var w = 500;
-        var h = 200;
+        var h = 300;
         var barpadding = 2.5;
+        var padding = 20;
 
         var svg = d3.select("body")
                     .append("svg")
@@ -66,11 +67,15 @@
 
         var xScale = d3.scale.linear()
                             .domain([0, d3.max(dataset1, function(d){ return d[0]})])
-                            .range([0, w])
+                            .range([padding, w - padding * 2])
 
         var yScale = d3.scale.linear()
                             .domain([0, d3.max(dataset1, function(d){ return d[1]})])
-                            .range([0, h])
+                            .range([h - padding, padding])
+
+        var rScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset1, function(d){ return d[1]})])
+                            .range([1, 10])
 
         svg.selectAll("rect")
             .data(dataset)
@@ -119,7 +124,7 @@
                 return yScale(d[1]);
             })
             .attr("r", function(d){
-                return Math.sqrt((h/2) - d[1]);
+                return rScale(d[1]);
             });
 
         svg1.selectAll("text")
