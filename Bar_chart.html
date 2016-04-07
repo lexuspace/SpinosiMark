@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <meta charset="UTF-8">
+    <title>D3 Test</title>
+    <style type="text/css">
+        .rect{
+            fill: #008080;
+            stroke: #000000;
+            stroke-width: 1;
+        }
+        .text1{
+            fill: #FFFFFF;
+            text-anchor: middle;
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        .text2{
+            fill: #FF0000;
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+      	.axis path{
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+				.axis line {
+    				fill: none;
+    				stroke: black;
+    				shape-rendering: crispEdges;
+				}
+        .axis text {
+    				font-family: sans-serif;
+    				font-size: 11px;
+				}
+    </style>
+</head>
+
+<body>
+
+   <script type="text/javascript">
+        var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                       11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+        
+        var w = 500;
+        var h = 200;
+        var barpadding = 2.5;
+        var padding = 20;
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+        
+        var xScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset1, function(d){ return d[0]})])
+                            .range([padding, w - padding * 2]);
+                            
+        var yScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset1, function(d){ return d[1]})])
+                            .range([h - padding, padding]);
+        
+        var xAxis = d3.svg.axis()
+        									.scale(xScale)
+        									.orient("bottom")
+                          .ticks(5);
+                          
+     		var yAxis = d3.svg.axis()
+        							.scale(yScale)
+        							.orient("left")
+        							.ticks(5);
+     
+        svg.selectAll("rect")
+            .data(dataset)
+            .enter()
+            .append("rect")
+            .attr("x", function(d,i){
+                return i*(w/dataset.length);
+            })
+            .attr("y", function(d){
+                var barheight = d*5;
+                return h - barheight;
+            })
+            .attr("width", w/dataset.length - barpadding)
+            .attr("height", function(d){
+                var barheight = d*5;
+                return barheight - 10; // offset for better viz
+            })
+            .attr("class", "rect")
+            .style("fill", function(d,i){
+                return "rgb(0, 0," + (d*10) + ")";
+            })
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .text(function(d){
+                return d;
+            })
+            .attr("class", "text1")
+            .attr("x", function(d,i){
+                return i*(w/dataset.length) + ((w/dataset.length) - barpadding)/2 ;
+            })
+            .attr("y", function(d){
+                return h - (d*5) + 10;
+            });
+   </script>
+
+
+</body>
+</html>
